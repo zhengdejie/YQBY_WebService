@@ -20,6 +20,11 @@ namespace YQBY_REST.ServiceInterface
             var appSettings = new AppSettings();
             dbFactory = new OrmLiteConnectionFactory(appSettings.Get("DB_CONNECT"), MySqlDialectProvider.Instance);
         }
+        /// <summary>
+        /// Login      Check Tel and Password
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public object Any(Login request)
         {
             List<Users> results = new List<Users>();
@@ -31,12 +36,35 @@ namespace YQBY_REST.ServiceInterface
                 }
                 catch (Exception e)
                 {
-                    return new loginResponse { Status = Status.EXCEPTION };
+                    return new LoginResponse { Status = Status.EXCEPTION, ExceptionContent = e.ToString() };
                 }
 
             }
 
-            return new loginResponse { Status = Status.OK, Count = results.Count(), Result = results };
+            return new LoginResponse { Status = Status.OK, Count = results.Count(), Result = results };
+        }
+        /// <summary>
+        /// Setup      
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public object Any(Setup request)
+        {
+            List<Users> results = new List<Users>();
+            using (IDbConnection db = dbFactory.OpenDbConnection())
+            {
+                try
+                {
+                    db.InsertOnly(new Users { Tel = request.Tel, Password = request.Password }, q => q.Insert(p => new { p.Tel, p.Password }));
+                }
+                catch (Exception e)
+                {
+                    return new SetupResponse { Status = Status.EXCEPTION, ExceptionContent = e.ToString() };
+                }
+
+            }
+
+            return new SetupResponse { Status = Status.OK, Count = results.Count(), Result = results };
         }
     }
 }
