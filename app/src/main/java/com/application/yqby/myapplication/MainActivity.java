@@ -16,6 +16,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+        //
     }
 
     @Override
