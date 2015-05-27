@@ -18,7 +18,7 @@ namespace YQBY_REST.ServiceModel
     {
         public Status Status { get; set; }
         public int Count { get; set; }
-        public List<Users> Result { get; set; }
+        public Users Result { get; set; }
         public string ExceptionContent { get; set; }
 
     }
